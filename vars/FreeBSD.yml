@@ -1,20 +1,31 @@
 ---
 __php_default_version_freebsd: "8.2"
+# we do not install packages via this role
 __php_packages: []
 __php_webserver_daemon: "nginx"
 __php_fpm_pool_name: www
 __php_fpm_pool_template: "{{ __php_fpm_pool_name }}.conf.j2"
+# user + group + mode of pool
 __php_fpm_pool_user: www
 __php_fpm_pool_group: www
 __php_fpm_pool_mode: "0660"
+# path to config file of third party software
 __php_conf_root_paths: "/usr/local/etc"
-__php_conf_paths: ""
+__php_conf_paths:
+  - "{{ __php_conf_root_paths }}"
+# owner and group of config files
 __php_conf_owner: root
 __php_conf_group: wheel
-__php_extension_conf_paths: "{{ __php_conf_root_paths }}/php"
-__php_apc_conf_filename: "/dev/null"
-__php_opcache_conf_filename: "{{ __php_extension_conf_paths }}/ext-10-opcache.ini"
+# path to directory with extension ini files
+__php_extension_conf_paths:
+  - "{{ __php_conf_root_paths }}/php"
+__php_apc_conf_filename: ""
+# name of ini file of opcache extension
+__php_opcache_conf_filename: "/ext-10-opcache.ini"
 __php_fpm_daemon: "php-fpm"
+# path to php-fpm.conf
 __php_fpm_conf_path: "{{ __php_conf_root_paths }}/php-fpm.conf"
-__php_fpm_pool_conf_path: "{{ __php_conf_root_paths }}/php-fpm.d/{{ php_fpm_pool_name }}.conf"
+# path to conf files of our pools
+__php_fpm_pool_conf_path: "{{ __php_fpm_conf_path | dirname }}/php-fpm.d/{{ __php_fpm_pool_name }}.conf"
+# path to php.ini
 __php_ini_conf_paths: "{{ __php_conf_root_paths }}/php.ini"
